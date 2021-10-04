@@ -1,0 +1,23 @@
+version: "3.3"
+
+services:
+  mysqldb:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=senha
+    volumes:
+      - ./app/ext/db:/docker-entrypoint-initdb.d
+      - mysqlVolume:/var/lib/mysql
+      - mysqlConfig:/etc/mysql
+
+  app_pydocker1:
+    build:
+      context: .
+    ports:
+    - 3001:5000
+    depends_on:
+      - mysqldb
+
+volumes:
+  mysqlVolume:
+  mysqlConfig:

@@ -12,6 +12,7 @@ make run
 ```sh
 sudo service docker start
 ```
+### Configurando o docker manualmente
 
 * Para criar a imagem docker a partir do Dockerfile:
 
@@ -53,6 +54,39 @@ docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=senha -p 3306:3306 -v mysqlV
 ```sh
 docker exec -i id_do_container  mysql -u root -psenha <./schema.sql
 ```
+
+* Criando uma conexão entre a imagem do mysql e da aplicação:
+
+```sh
+docker network create mynet
+```
+
+* Subindo a aplicação com todas as propriedades até aqui:
+
+```sh
+docker run -e MYSQL_ROOT_PASSWORD=senha --name mysqldb --network mynet -p 3306:3306 -v mysqlVolume:/var/lib/mysql -d mysql:latest
+```
+
+* Atualizando uma imagem docker que já existe:
+
+```sh
+docker build . --tag docker-pythonv2
+```
+
+* Subindo a aplicação com a conexão network:
+
+```sh
+docker run -p 3000:5000 --network mynet docker-pythonv2
+```
+
+### Configurando com o docker-compose
+
+* Subindo através do docker-compose:
+
+```sh
+docker-compose -f docker-compose.yml up --build
+```
+
 ## Ambientes virtuais
 
 * Virtual env utilizada com o conda -> pydocker
